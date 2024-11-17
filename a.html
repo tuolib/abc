@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./src/crypto-js.min.js"></script>
+    <script>
+        function enc(keyString, textString) {
+            var text = CryptoJS.enc.Utf8.parse(textString);
+            var key = CryptoJS.enc.Utf8.parse(keyString);
+            var encrypted = CryptoJS.AES.encrypt(text, key, { mode: CryptoJS.mode.ECB, padding: CryptoJS.pad.ZeroPadding });
+            var lastEn = encrypted.ciphertext.toString(CryptoJS.enc.Hex);
+            return lastEn;
+        }
+        function dec(keyString, ciString) {
+            var ciphertext = CryptoJS.enc.Hex.parse(ciString)
+            var key = CryptoJS.enc.Utf8.parse(keyString);
+            var decrypted = CryptoJS.AES.decrypt({ ciphertext: ciphertext }, key, { mode: CryptoJS.mode.ECB, padding: CryptoJS.pad.ZeroPadding });
+            return decrypted.toString(CryptoJS.enc.Utf8);
+        }
+    </script>
+</head>
+
+<body>
+    <script>
+        
+        // var text = 'US0378331005-USD-US-en';
+        // var key = '11A1764225B11AA1';
+
+        var text = '';
+        var text2 = '';
+        var key = '';
+
+        console.log('from:', enc(key, text));
+        console.log('from2:', enc(key, text2));
+        // console.log('to:', dec(key, ""));
+
+        // // Fix: Use the Utf8 encoder
+        // text = CryptoJS.enc.Utf8.parse(text);
+        // // Fix: Use the Utf8 encoder (or apply in combination with the hex encoder a 32 hex digit key for AES-128)
+        // key = CryptoJS.enc.Utf8.parse(key);
+
+        // // Fix: Apply padding (e.g. Zero padding). Note that PKCS#7 padding is more reliable and that ECB is insecure
+        // var encrypted = CryptoJS.AES.encrypt(text, key, { mode: CryptoJS.mode.ECB, padding: CryptoJS.pad.ZeroPadding });
+        // encrypted = encrypted.ciphertext.toString(CryptoJS.enc.Hex);
+        // console.log('encrypted', encrypted);
+
+        // // Fix: Pass a CipherParams object (or the Base64 encoded ciphertext)
+        // var decrypted = CryptoJS.AES.decrypt({ ciphertext: CryptoJS.enc.Hex.parse(encrypted) }, key, { mode: CryptoJS.mode.ECB, padding: CryptoJS.pad.ZeroPadding });
+
+        // // Fix: Utf8 decode the decrypted data
+        // console.log('decrypted', decrypted.toString(CryptoJS.enc.Utf8)); 
+    </script>
+</body>
+
+</html>
